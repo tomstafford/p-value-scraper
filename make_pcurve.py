@@ -35,6 +35,7 @@ print("getting list of files")
 
 #if 'tom' in socket.gethostname():
 #    os.chdir('/home/tom/Dropbox/university/expts/pcurve')
+#    os.chdir('/home/tom/Dropbox/university/expts/pcurve/p-value-scraper')
 #else:
 #    print("assuming running in host directory")
 
@@ -49,7 +50,7 @@ df=pd.DataFrame(columns=['id','folder','p_value'])
 for filename in filenames:
     try:
         #filename=filenames[1]
-        foldername=filename.split('/')[0] #which subfolder is the file in
+        foldername='-'.join(filename.split('/')[:-1]) #which subfolder is the file in
         fulltext=[]
         
         if (filename[-4:]=='docx') or (filename[-4:]=='DOCX'):
