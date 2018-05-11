@@ -13,8 +13,8 @@ https://python-docx.readthedocs.io/en/latest/user/install.html
  
  if you are using pip then 
  
-<code> pip3 install python-docx
-<code> pip3 install textract
+<code> pip3 install python-docx</code>
+<code> pip3 install textract</code>
  
  should work
  
@@ -22,6 +22,6 @@ https://python-docx.readthedocs.io/en/latest/user/install.html
  
  e.g. from the command line
 
-<code> python3 make_pcurve.py
+<code> python3 make_pcurve.py</code>
  
  5. Enjoy the output and hopefully the data will be saved in a CSV file pvalues.csv
