@@ -33,6 +33,7 @@ def getText(filename):
 
 print("getting list of files")
 
+##these lines if you want to set the working directory (e.g. when using Spyder)
 #if 'tom' in socket.gethostname():
 #    os.chdir('/home/tom/Dropbox/university/expts/pcurve')
 #    os.chdir('/home/tom/Dropbox/university/expts/pcurve/p-value-scraper')
@@ -95,6 +96,12 @@ print("saving data")
 
 df.to_csv('scraped_pvalues.csv')
 
+'''
+#these lines if you are loading data already scraped
+df=pd.read_csv('scraped_pvalues.csv')
+scanned_reports=df.id.max()+1
+'''
+
 print("make histograms")
 
 pvalues=df['p_value'].values
@@ -102,28 +109,28 @@ pvalues=df['p_value'].values
 plt.clf()
 
 mask=(pvalues<1) & (pvalues>0)
-
 plt.hist(pvalues[mask],bins=50)
 plt.title(str(len(pvalues))+ " p values, from " + str(scanned_reports) + " reports")
 plt.savefig('pcurve_all',bbox_inches='tight')
 
 plt.clf()
-mask=(pvalues<0.05) & (pvalues>0)
-plt.hist(pvalues[mask],bins=15)
-plt.title(str(len(pvalues))+ " p values, from " + str(scanned_reports) + " reports")
-plt.savefig('pcurve_0p05',bbox_inches='tight')
-
-
-plt.clf()
-mask=(pvalues<0.1) & (pvalues>0)
-plt.hist(pvalues[mask],bins=30)
-plt.title(str(len(pvalues))+ " p values, from " + str(scanned_reports) + " reports")
-plt.savefig('pcurve_0p1',bbox_inches='tight')
-
-plt.clf()
 plt.hist(df.groupby('id')['p_value'].count(),bins=25,color='r')
 plt.xlabel('p values in report')
 plt.ylabel('frequency')
+plt.title(str(len(pvalues))+ " p values, from " + str(scanned_reports) + " reports")
 plt.savefig('pcount_dist.png',bbox_inches='tight')
 
-#todo - add something to capture "p <"?
+
+epsilon=0.00001 #using this value so p=0.05 is included in the 0.04 to 0.05 category etc
+
+
+count=plt.hist(pvalues,bins=np.arange(0+epsilon,0.11,0.01))
+freq=count[0]
+upper_bounds=np.arange(0.01,0.11,0.01)
+plt.clf()
+plt.plot(range(len(count[0])),count[0])
+plt.xticks(range(len(count[0])),['<'+str(x) for x in upper_bounds],rotation=25)
+plt.xlabel('p value bin')
+plt.ylabel('frequency')
+plt.title('Frequency counts of p values below 0.1, from '+ str(scanned_reports) + " reports")
+plt.savefig('critical.png',bbox_inches='tight')
